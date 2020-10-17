@@ -1,54 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr 22 03:15:03 2016
-
-@author: utkarsh
-"""
-
-
-# RIDGEFILTER - enhances fingerprint image via oriented filters
-#
-# Function to enhance fingerprint image via oriented filters
-#
-# Usage:
-#  newim =  ridgefilter(im, orientim, freqim, kx, ky, showfilter)
-#
-# Arguments:
-#         im       - Image to be processed.
-#         orientim - Ridge orientation image, obtained from RIDGEORIENT.
-#         freqim   - Ridge frequency image, obtained from RIDGEFREQ.
-#         kx, ky   - Scale factors specifying the filter sigma relative
-#                    to the wavelength of the filter.  This is done so
-#                    that the shapes of the filters are invariant to the
-#                    scale.  kx controls the sigma in the x direction
-#                    which is along the filter, and hence controls the
-#                    bandwidth of the filter.  ky controls the sigma
-#                    across the filter and hence controls the
-#                    orientational selectivity of the filter. A value of
-#                    0.5 for both kx and ky is a good starting point.
-#         showfilter - An optional flag 0/1.  When set an image of the
-#                      largest scale filter is displayed for inspection.
-# 
-# Returns:
-#         newim    - The enhanced image
-#
-# See also: RIDGEORIENT, RIDGEFREQ, RIDGESEGMENT
-
-# Reference: 
-# Hong, L., Wan, Y., and Jain, A. K. Fingerprint image enhancement:
-# Algorithm and performance evaluation. IEEE Transactions on Pattern
-# Analysis and Machine Intelligence 20, 8 (1998), 777 789.
-
-### REFERENCES
-
-# Peter Kovesi  
-# School of Computer Science & Software Engineering
-# The University of Western Australia
-# pk at csse uwa edu au
-# http://www.csse.uwa.edu.au/~pk
-
-
-
 import numpy as np
 import scipy;
 def ridge_filter(im, orient, freq, kx, ky):
@@ -78,7 +27,7 @@ def ridge_filter(im, orient, freq, kx, ky):
     sigmay = 1/unfreq[0]*ky;
     
     sze = np.round(3*np.max([sigmax,sigmay]));
-    
+    sze = int(sze);
     x,y = np.meshgrid(np.linspace(-sze,sze,(2*sze + 1)),np.linspace(-sze,sze,(2*sze + 1)));
     
     reffilter = np.exp(-(( (np.power(x,2))/(sigmax*sigmax) + (np.power(y,2))/(sigmay*sigmay)))) * np.cos(2*np.pi*unfreq[0]*x); # this is the original gabor filter
@@ -138,4 +87,4 @@ def ridge_filter(im, orient, freq, kx, ky):
         
         newim[r][c] = np.sum(img_block * gabor_filter[int(orientindex[r][c]) - 1]);
         
-    return(newim);    
+    return(newim); 
